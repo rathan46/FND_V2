@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Feedback | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head"><div><p class="eyebrow">Messages</p><h1>Feedback Inbox</h1></div><a class="btn btn-ghost" href="{{ url_for('admin_dashboard') }}">Back</a></div>
+  <div class="history-list">
+    {% for msg in messages %}
+    <article class="history-card glass-panel"><div><span>{{ msg.name }} • {{ msg.email }} • {{ msg.created_at }}</span><h2>{{ msg.subject }}</h2><p>{{ msg.message }}</p></div><form method="post" action="{{ url_for('admin_delete_feedback', feedback_id=msg.id) }}"><button class="btn btn-danger-soft">Delete</button></form></article>
+    {% else %}
+    <div class="empty-state glass-panel">No messages yet.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

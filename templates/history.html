@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}History | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head">
+    <div><p class="eyebrow">Audit trail</p><h1>Verification History</h1></div>
+    <form class="search-row"><input name="q" value="{{ q }}" placeholder="Search history"><select name="verdict"><option value="">All</option><option {% if verdict=='Real' %}selected{% endif %}>Real</option><option {% if verdict=='Fake' %}selected{% endif %}>Fake</option></select><button class="btn btn-neon">Filter</button></form>
+  </div>
+  <div class="history-list">
+    {% for row in rows %}
+    <article class="history-card glass-panel" data-aos="fade-up">
+      <div><span class="verdict {{ row.verdict|lower }}">{{ row.verdict }}</span><h2>{{ row.headline or 'Untitled verification' }}</h2><p>{{ row.content[:180] }}{% if row.content|length > 180 %}...{% endif %}</p><small>{{ row.created_at }} • {{ row.confidence }}% • {{ row.risk_level }} risk</small></div>
+      <div class="history-actions">
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('report', verification_id=row.id) }}">Report</a>
+        <form method="post" action="{{ url_for('delete_history', verification_id=row.id) }}"><button class="btn btn-danger-soft btn-sm">Delete</button></form>
+      </div>
+    </article>
+    {% else %}
+    <div class="empty-state glass-panel">No verification history yet.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

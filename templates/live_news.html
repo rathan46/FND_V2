@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Live News | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head" data-aos="fade-up">
+    <div><p class="eyebrow">Global feed</p><h1>Live News</h1></div>
+    <form class="search-row">
+      <input name="q" value="{{ search }}" placeholder="Search news">
+      <select name="category">
+        {% for c in ["general","technology","politics","sports","business","science","entertainment","health"] %}
+        <option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c|title }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-neon">Filter</button>
+    </form>
+  </div>
+  <div class="toolbar glass-panel"><span class="live-dot"></span> Live global news via GDELT with Google News RSS fallback <button class="btn btn-ghost btn-sm" onclick="location.reload()">Refresh</button></div>
+  <div class="news-grid">
+    {% for article in articles %}
+    <article class="news-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 25 }}">
+      <img src="{{ article.urlToImage or article.image or 'https://picsum.photos/900/540?blur=1' }}" alt="">
+      <div>
+        <span>{{ (article.source.name if article.source is mapping else article.source.name) if article.source else 'Unknown Source' }}</span>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.description or 'No summary available.' }}</p>
+        <div class="card-foot"><small>{{ article.publishedAt }}</small><a class="btn btn-ghost btn-sm" href="{{ article.url }}" target="_blank">Read More</a></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  <div class="pagination-row">
+    <a class="btn btn-ghost" href="{{ url_for('live_news', category=category, q=search, page=page-1 if page>1 else 1) }}">Previous</a>
+    <span>Page {{ page }}</span>
+    <a class="btn btn-neon" href="{{ url_for('live_news', category=category, q=search, page=page+1) }}">Next</a>
+  </div>
+</section>
+{% endblock %}

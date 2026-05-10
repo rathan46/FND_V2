@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | TruthLens AI{% endblock %}
+{% block content %}
+<section class="dashboard-layout">
+  <aside class="side-rail glass-panel" data-aos="fade-right">
+    <h2>Verification</h2>
+    <div class="stat"><span>Total scans</span><b>{{ stats.total }}</b></div>
+    <div class="stat"><span>Fake alerts</span><b>{{ stats.fake }}</b></div>
+    <div class="stat"><span>Real leaning</span><b>{{ stats.real }}</b></div>
+    <canvas id="userStatsChart" data-real="{{ stats.real }}" data-fake="{{ stats.fake }}"></canvas>
+  </aside>
+  <section class="workspace glass-panel" data-aos="fade-up">
+    <div class="section-head">
+      <div><p class="eyebrow">AI analyzer</p><h1>News Credibility Scan</h1></div>
+      <button class="btn btn-ghost" id="clearBtn">Clear All</button>
+    </div>
+    <form id="analysisForm" class="analysis-grid">
+      <label>News headline<input id="headline" name="headline" placeholder="Paste the headline here"></label>
+      <label>Source URL<input id="source_url" name="source_url" placeholder="https://source.example/article"></label>
+      <label class="full">News content<textarea id="content" name="content" rows="8" placeholder="Paste article text, claim, transcript, or social post"></textarea></label>
+      <div class="button-row full">
+        <button class="btn btn-neon" type="submit">AI Analyze</button>
+        <a class="btn btn-ghost disabled" id="downloadReport" href="{{ url_for('latest_report') }}">Download Report</a>
+      </div>
+    </form>
+    <div id="loader" class="ai-loader d-none"><div class="pulse-core"></div><p>Analyzing claim patterns, source signals, bias, and risk...</p></div>
+    <div id="resultCard" class="result-card d-none">
+      <div class="result-top"><span id="predictionBadge"></span><strong id="timestamp"></strong></div>
+      <div class="confidence-wrap"><canvas id="confidenceChart"></canvas><div><h2 id="confidenceText"></h2><p id="summary"></p></div></div>
+      <div class="result-grid">
+        <article><h3>Reasoning</h3><p id="reasoning"></p></article>
+        <article><h3>Source credibility</h3><p id="sourceCred"></p></article>
+        <article><h3>Bias detection</h3><p id="bias"></p></article>
+        <article><h3>Emotional manipulation</h3><p id="emotion"></p></article>
+      </div>
+      <div class="references"><h3>Similar references</h3><ul id="references"></ul></div>
+    </div>
+  </section>
+</section>
+{% endblock %}

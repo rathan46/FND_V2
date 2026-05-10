@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin Users | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head"><div><p class="eyebrow">Identity control</p><h1>Users & Logs</h1></div><a class="btn btn-ghost" href="{{ url_for('admin_dashboard') }}">Back</a></div>
+  <div class="glass-panel table-panel">
+    <h2>Registered Users</h2>
+    <table class="premium-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+      {% for user in users %}
+      <tr><td>{{ user.name }}</td><td>{{ user.email }}</td><td>{{ 'Admin' if user.is_admin else 'User' }}</td><td>{{ 'Blocked' if user.is_blocked else 'Active' }}</td><td class="inline-actions">
+        {% if not user.is_admin %}
+        <form method="post" action="{{ url_for('admin_toggle_user', user_id=user.id) }}"><button class="btn btn-ghost btn-sm">{{ 'Unblock' if user.is_blocked else 'Block' }}</button></form>
+        <form method="post" action="{{ url_for('admin_reset_password', user_id=user.id) }}"><button class="btn btn-ghost btn-sm">Reset</button></form>
+        <form method="post" action="{{ url_for('admin_delete_user', user_id=user.id) }}"><button class="btn btn-danger-soft btn-sm">Remove</button></form>
+        {% endif %}
+      </td></tr>
+      {% endfor %}
+    </tbody></table>
+  </div>
+  <div class="glass-panel table-panel">
+    <h2>Login / Logout Logs</h2>
+    <table class="premium-table"><thead><tr><th>Email</th><th>Action</th><th>IP</th><th>Time</th></tr></thead><tbody>
+      {% for log in logs %}<tr><td>{{ log.email }}</td><td>{{ log.action }}</td><td>{{ log.ip_address }}</td><td>{{ log.created_at }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+</section>
+{% endblock %}

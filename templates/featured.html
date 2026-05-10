@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Featured News | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head">
+    <div><p class="eyebrow">Editor desk</p><h1>Featured News</h1></div>
+    <form class="search-row"><input name="q" value="{{ q }}" placeholder="Search articles"><input name="tag" value="{{ tag }}" placeholder="Tag"><button class="btn btn-neon">Search</button></form>
+  </div>
+  <div class="article-grid">
+    {% for item in items %}
+    <article class="article-card glass-panel" data-aos="fade-up">
+      {% if item.image_path %}<img src="{{ url_for('static', filename=item.image_path) }}" alt="">{% endif %}
+      <div class="article-body">
+        <span>{{ item.category or 'Featured' }} • {{ item.created_at }} • {{ item.author }}</span>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.content }}</p>
+        <div class="tag-row">{% for tag_item in (item.tags or '').split(',') if tag_item.strip() %}<b>{{ tag_item.strip() }}</b>{% endfor %}</div>
+      </div>
+    </article>
+    {% else %}
+    <div class="empty-state glass-panel">No featured articles yet. Admins can publish from the control panel.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

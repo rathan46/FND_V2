@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Admin | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head">
+    <div><p class="eyebrow">Admin command center</p><h1>System Analytics</h1></div>
+    <div class="button-row"><a class="btn btn-ghost" href="{{ url_for('admin_users') }}">Users</a><a class="btn btn-ghost" href="{{ url_for('admin_featured') }}">Featured</a><a class="btn btn-ghost" href="{{ url_for('admin_feedback') }}">Feedback</a></div>
+  </div>
+  <div class="admin-stats">
+    <div class="mini-card"><span>Users</span><b>{{ stats.users }}</b></div>
+    <div class="mini-card"><span>Verifications</span><b>{{ stats.verifications }}</b></div>
+    <div class="mini-card"><span>Fake flags</span><b>{{ stats.fake }}</b></div>
+    <div class="mini-card"><span>AI calls</span><b>{{ stats.usage.ai_calls }}</b></div>
+  </div>
+  <div class="admin-grid">
+    <div class="glass-panel"><h2>Fake vs Real</h2><canvas id="adminVerdictChart" data-real="{{ stats.real }}" data-fake="{{ stats.fake }}"></canvas></div>
+    <div class="glass-panel"><h2>API Usage</h2><canvas id="apiUsageChart" data-ai="{{ stats.usage.ai_calls }}" data-news="{{ stats.usage.news_calls }}"></canvas></div>
+  </div>
+  <div class="glass-panel table-panel">
+    <h2>Recent Activity</h2>
+    <table class="premium-table"><thead><tr><th>User</th><th>Headline</th><th>Verdict</th><th>Confidence</th><th>Time</th></tr></thead><tbody>
+      {% for row in recent %}<tr><td>{{ row.name }}</td><td>{{ row.headline }}</td><td><span class="verdict {{ row.verdict|lower }}">{{ row.verdict }}</span></td><td>{{ row.confidence }}%</td><td>{{ row.created_at }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+</section>
+{% endblock %}

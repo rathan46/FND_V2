@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-wrap"><div class="auth-card glass-panel"><p class="eyebrow">Error {{ code }}</p><h1>{{ message }}</h1><a class="btn btn-neon" href="{{ url_for('index') }}">Return Home</a></div></section>
+{% endblock %}

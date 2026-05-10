@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Profile | TruthLens AI{% endblock %}
+{% block content %}
+<section class="dashboard-layout">
+  <aside class="side-rail glass-panel"><h2>Profile Stats</h2><div class="stat"><span>Total</span><b>{{ stats.total }}</b></div><div class="stat"><span>Real</span><b>{{ stats.real }}</b></div><div class="stat"><span>Fake</span><b>{{ stats.fake }}</b></div></aside>
+  <form method="post" class="workspace glass-panel stacked-form">
+    <p class="eyebrow">Account</p><h1>User Profile</h1>
+    <label>Name<input name="name" value="{{ user.name }}" required></label>
+    <label>Email<input value="{{ user.email }}" disabled></label>
+    <button class="btn btn-neon">Update Profile</button>
+  </form>
+</section>
+{% endblock %}

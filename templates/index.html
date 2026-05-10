@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}TruthLens AI | Fake News Detection{% endblock %}
+{% block content %}
+<section class="hero-grid">
+  <div class="hero-copy" data-aos="fade-up">
+    <p class="eyebrow">AI verification command center</p>
+    <h1>TruthLens AI</h1>
+    <p class="lead">Analyze headlines, long-form claims, source credibility, bias, and emotional manipulation in a cinematic dashboard built for fast verification.</p>
+    <div class="hero-actions">
+      <a class="btn btn-neon btn-lg" href="{{ url_for('register') }}">Launch Platform</a>
+      <a class="btn btn-ghost btn-lg" href="{{ url_for('admin_login') }}">Admin Login</a>
+    </div>
+  </div>
+  <div class="hero-orbit" data-aos="zoom-in">
+    <div class="scanner-card">
+      <div class="scan-line"></div>
+      <span class="status-pill">Live credibility scan</span>
+      <h2>83%</h2>
+      <p>Confidence score with source, bias, and risk telemetry.</p>
+      <div class="meter"><span style="width:83%"></span></div>
+    </div>
+  </div>
+</section>
+<section class="feature-band">
+  {% for item in ["AI verdicts", "PDF reports", "Live news", "Admin analytics"] %}
+  <div class="mini-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 80 }}">
+    <span class="icon-dot"></span>
+    <h3>{{ item }}</h3>
+    <p>Built into a secure, responsive Flask system with polished interactions.</p>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

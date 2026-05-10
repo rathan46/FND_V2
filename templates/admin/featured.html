@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Manage Featured | TruthLens AI{% endblock %}
+{% block content %}
+<section class="content-shell">
+  <div class="section-head"><div><p class="eyebrow">Editorial ops</p><h1>Featured News Manager</h1></div><a class="btn btn-ghost" href="{{ url_for('admin_dashboard') }}">Back</a></div>
+  <form method="post" enctype="multipart/form-data" class="glass-panel stacked-form">
+    <label>Title<input required name="title" placeholder="Featured article title"></label>
+    <label>Category<input name="category" placeholder="Technology, Politics..."></label>
+    <label>Tags<input name="tags" placeholder="ai, fact-check, policy"></label>
+    <label>Banner image<input type="file" name="image" accept="image/*"></label>
+    <label>Article content<textarea required name="content" rows="8"></textarea></label>
+    <button class="btn btn-neon">Publish Article</button>
+  </form>
+  <div class="history-list">
+    {% for item in items %}
+    <article class="history-card glass-panel"><div><h2>{{ item.title }}</h2><p>{{ item.content[:220] }}...</p><small>{{ item.category }} • {{ item.created_at }}</small></div><form method="post" action="{{ url_for('admin_delete_featured', item_id=item.id) }}"><button class="btn btn-danger-soft">Delete</button></form></article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ mode|title }} | TruthLens AI{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card glass-panel" data-aos="fade-up">
+    <p class="eyebrow">{% if mode == 'admin' %}Administrator access{% elif mode == 'register' %}Create workspace{% else %}Welcome back{% endif %}</p>
+    <h1>{% if mode == 'register' %}Register{% elif mode == 'admin' %}Admin Login{% else %}Login{% endif %}</h1>
+    <form method="post" class="stacked-form">
+      {% if mode == 'register' %}
+      <label>Name<input required name="name" pattern="[A-Za-z]+( [A-Za-z]+)*" title="Use alphabetic characters only, with single spaces between words." placeholder="Your full name"></label>
+      {% endif %}
+      <label>Email<input required type="email" name="email" placeholder="you@example.com"></label>
+      <label>Password<input required type="password" name="password" minlength="8" placeholder="••••••••"></label>
+      <button class="btn btn-neon w-100" type="submit">{% if mode == 'register' %}Create Account{% else %}Enter Platform{% endif %}</button>
+    </form>
+    <div class="auth-links">
+      {% if mode != 'register' %}<a href="{{ url_for('forgot_password') }}">Forgot password?</a>{% endif %}
+      {% if mode == 'register' %}<a href="{{ url_for('login') }}">Already have an account?</a>{% else %}<a href="{{ url_for('register') }}">Create account</a>{% endif %}
+    </div>
+    <!--{% if mode == 'admin' %}
+      <p class="hint">Default admin: admin@truthlens.ai / Admin@12345</p>
+    {% endif %}-->
+  </div>
+</section>
+{% endblock %}
