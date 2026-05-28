@@ -139,6 +139,7 @@ def create_app():
     @app.route("/forgot-password", methods=["GET", "POST"])
     def forgot_password():
         reset_token = None
+        reset_url = None
         if request.method == "POST":
             email = request.form.get("email", "").strip().lower()
             user = query_one("SELECT * FROM users WHERE email = ?", (email,))
@@ -148,8 +149,32 @@ def create_app():
                     "UPDATE users SET reset_token = ?, reset_requested_at = ? WHERE id = ?",
                     (reset_token, now(), user["id"]),
                 )
+                reset_url = url_for("reset_password", token=reset_token, _external=True)
             flash("If that email exists, a reset token has been generated.", "info")
-        return render_template("forgot_password.html", reset_token=reset_token)
+        return render_template("forgot_password.html", reset_token=reset_token, reset_url=reset_url)
+
+    @app.route("/reset-password/<token>", methods=["GET", "POST"])
+    def reset_password(token):
+        user = query_one("SELECT * FROM users WHERE reset_token = ?", (token,))
+        if not user:
+            flash("Invalid or expired reset token.", "danger")
+            return redirect(url_for("forgot_password"))
+        if request.method == "POST":
+            password = request.form.get("password", "")
+            confirm_password = request.form.get("confirm_password", "")
+            if len(password) < 8:
+                flash("Password must be at least 8 characters.", "danger")
+                return redirect(url_for("reset_password", token=token))
+            if password != confirm_password:
+                flash("Passwords do not match.", "danger")
+                return redirect(url_for("reset_password", token=token))
+            execute(
+                "UPDATE users SET password_hash = ?, reset_token = NULL, reset_requested_at = NULL WHERE id = ?",
+                (generate_password_hash(password), user["id"]),
+            )
+            flash("Password reset successfully. You can now sign in.", "success")
+            return redirect(url_for("login"))
+        return render_template("reset_password.html", token=token, user=user)
 
     @app.route("/logout")
     @login_required

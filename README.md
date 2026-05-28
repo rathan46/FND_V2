@@ -72,6 +72,7 @@ $env:GNEWS_API_KEY="..."
 ## Included Features
 
 - Secure registration, login, logout, sessions, password hashing, forgot-password token flow
+- Working user-side password reset using demo reset tokens
 - AI news verification dashboard with confidence visualization and animated result card
 - Professional PDF report generation via ReportLab
 - Live news feed with category filtering, search, pagination, refresh
@@ -81,3 +82,21 @@ $env:GNEWS_API_KEY="..."
 - Admin analytics, users, password resets, blocks, removals, logs, feedback, featured news management
 - SQLite database with a clean repository-style data access layer
 - Premium responsive glassmorphism UI with GSAP, AOS, Chart.js, Bootstrap, and animated particles
+
+## Password Reset
+
+User-side demo reset flow:
+
+1. Open `http://127.0.0.1:5000/forgot-password`.
+2. Enter the registered user email.
+3. The app generates a demo reset token and displays a reset link.
+4. Open the reset link, which looks like `/reset-password/<token>`.
+5. Enter and confirm the new password.
+6. Login with the new password.
+
+Admin reset flow:
+
+1. Login at `http://127.0.0.1:5000/admin-login`.
+2. Open `Admin > Users`.
+3. Click `Reset` beside a user.
+4. The app generates a temporary password for that account.
